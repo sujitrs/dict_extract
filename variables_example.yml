@@ -1,0 +1,21 @@
+- name:  Ansible Map Extract filter
+  hosts: localhost
+  vars: 
+        servers:
+          { 
+            "172.168.0.1":{ "path":"/var1","cmd":"start node" }, 
+            "192.168.0.1":{ "path":"/var2","cmd":"start redis" }, 
+            "10.51.162.3":{ "path":"/var3","cmd":"start db" } 
+          }
+  tasks: 
+    - name: Task1 - Select only 172.168.0.1's records from the Dictionary or Hash table
+      debug: 
+        msg={{ ['172.168.0.1']| map('extract', servers ) }}
+
+    - name: Task2 - Select 192.168.0.1's record and look for its command using Third argument
+      debug: 
+        msg=" 192.168.0.1`s command is {{ ['192.168.0.1']| map('extract', servers, 'cmd') | last}} "
+    
+    - name: Task3 - Select 10.51.162.3's record and look for his path using Third argument
+      debug: 
+        msg=" 10.51.162.3 has path as  {{ ['10.51.162.3']| map('extract', servers, 'path') | last }} "

@@ -1,0 +1,15 @@
+- name:  Ansible Map Extract filter
+  hosts: localhost
+  vars: 
+        servers:
+          { 
+            "172.168.0.1":"/var1", 
+            "192.168.0.1":"/var2", 
+            "10.51.162.3":"/var3"  
+          }
+  tasks: 
+    - name: Task1 - Select only {{ server_ip }}'s records from the Dictionary or Hash table
+      debug: 
+        msg= {{ lookup('ansible.builtin.dict', servers) }}  | map('extract',servers)}} #can only concatenate str (not \"list\") to str"}
+        #msg=['{{ server_ip }}']
+        #msg={{ {0}   | map('extract',servers)}}
