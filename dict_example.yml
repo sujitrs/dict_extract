@@ -1,3 +1,5 @@
+# Use CLI as below
+# ansible-playbook dict_example.yml --extra-var "ip=172.19.0.3 comp=backend"
 - name:  Argument Variable based attribute extraction from a dictionary
   hosts: localhost
 
