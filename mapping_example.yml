@@ -29,7 +29,7 @@
   tasks:
     - name: set_fact when backend in key
       ansible.builtin.set_fact:
-        ip_exists: true
+        ip_exists: "{{ item.value.path }}"
       loop: "{{ lookup('ansible.builtin.dict', components) }}"
       #when: "'10.226.202.42' in item.key and 'DSH_2' in item.value.jvmName"
       when: "'{{ ip }}' in item.key and '{{ jvm }}' in item.value.jvmName" 
