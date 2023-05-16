@@ -1,5 +1,5 @@
-# CLI
-# ansible-playbook mapping_example.yml --extra-var "ip=10.226.202.42 jvm=DSH_1"
+# This example demonstrates how to check for a combination of given IP and JVM_NAME against defined dictionary 
+# ansible-playbook mapping_example.yml --extra-var "ip=10.226.202.42 jvm=DSH_1" 
 # ansible-playbook mapping_example.yml --extra-var "ip=10.226.202.42 jvm=DSH_2"
 
 - name:  Argument Variable based attribute extraction from a dictionary
@@ -33,4 +33,7 @@
       loop: "{{ lookup('ansible.builtin.dict', components) }}"
       #when: "'10.226.202.42' in item.key and 'DSH_2' in item.value.jvmName"
       when: "'{{ ip }}' in item.key and '{{ jvm }}' in item.value.jvmName" 
+    - name: check if given ip JVM nam exists
+      debug:
+        msg: "Given IP: {{ ip }} and JVM Name: {{ jvm }} matching= {{ ip_exists }}"  
     
