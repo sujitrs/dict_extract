@@ -1,11 +1,12 @@
 # This example demonstrates how to check for a combination of given IP and JVM_NAME against defined dictionary 
-# ansible-playbook mapping_example.yml --extra-var "ip=10.226.202.42 jvm=DSH_1" 
-# ansible-playbook mapping_example.yml --extra-var "ip=10.226.202.42 jvm=DSH_2"
+# ansible-playbook mapping_example.yml --extra-var "JVM_NODE=10.226.202.42 jvm=DSH_1" 
+# ansible-playbook mapping_example.yml --extra-var "JVM_NODE=10.226.202.42 jvm=DSH_2"
 
 - name:  Argument Variable based attribute extraction from a dictionary
   hosts: localhost
 
   vars:
+    match_found: false
     components:
       10.226.202.41:
         path: /etc/lib/
@@ -29,11 +30,13 @@
   tasks:
     - name: set_fact when backend in key
       ansible.builtin.set_fact:
-        ip_exists: "{{ item.value.path }}"
+        path_value: "{{ item.value.path }}"
+        match_found: true
       loop: "{{ lookup('ansible.builtin.dict', components) }}"
       #when: "'10.226.202.42' in item.key and 'DSH_2' in item.value.jvmName"
-      when: "'{{ ip }}' in item.key and '{{ jvm }}' in item.value.jvmName" 
+      when: "'{{ JVM_NODE }}' in item.key and '{{ jvm }}' in item.value.jvmName" 
     - name: check if given ip JVM nam exists
       debug:
-        msg: "Given IP: {{ ip }} and JVM Name: {{ jvm }} matching= {{ ip_exists }}"  
+        msg: "Given IP: {{ JVM_NODE }} and JVM Name: {{ jvm }} path= {{ path_value }} and match={{ match_found }}"  
+      when: match_found==true
     
